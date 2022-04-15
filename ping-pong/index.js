@@ -58,4 +58,44 @@
     }
     touchStart = event.changedTouches[0].clientX;
   });
+
+  //////////////////////////////////////////////////////////////////////////////
+  //                               TOUCH HANDLER                             ///
+  //////////////////////////////////////////////////////////////////////////////
+  let mouseStart = 0,
+    mouseActive = false;
+  document.addEventListener("mousedown", function (event) {
+    mouseStart = event.clientX;
+    mouseActive = true;
+  });
+  document.addEventListener("mousemove", function (event) {
+    if (!mouseActive) return;
+    let lefftComputedStyle = +getComputedStyle(top, "left").left.split("px")[0];
+    const mouseMove = event.clientX - mouseStart;
+    if (
+      mouseMove > 0 &&
+      lefftComputedStyle < container.clientWidth - top.clientWidth / 2
+    ) {
+      top.style.left = parseInt(lefftComputedStyle) + mouseMove + "px";
+      bottom.style.left = parseInt(lefftComputedStyle) + mouseMove + "px";
+    } else if (mouseMove < 0 && lefftComputedStyle > top.clientWidth / 2) {
+      top.style.left = parseInt(lefftComputedStyle) + mouseMove + "px";
+      bottom.style.left = parseInt(lefftComputedStyle) + mouseMove + "px";
+    }
+    if (
+      lefftComputedStyle + mouseMove >
+      container.clientWidth - top.clientWidth / 2
+    ) {
+      top.style.left = container.clientWidth - top.clientWidth / 2 + "px";
+      bottom.style.left = container.clientWidth - top.clientWidth / 2 + "px";
+    }
+    if (lefftComputedStyle + mouseMove < top.clientWidth / 2) {
+      top.style.left = top.clientWidth / 2 + "px";
+      bottom.style.left = top.clientWidth / 2 + "px";
+    }
+    mouseStart = event.clientX;
+  });
+  document.addEventListener("mouseup", () => {
+    mouseActive = false;
+  });
 })();
