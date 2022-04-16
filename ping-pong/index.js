@@ -46,8 +46,12 @@
         ballSpeedY = -ballSpeedY;
         ball.style.left = ballX + ballSpeedX + "px";
         ball.style.top = ballY + ballSpeedY + "px";
+        topScore++;
+        console.log(topScore);
       } else {
         console.log("Game Over");
+        window.localStorage.setItem("topScore", topScore);
+        topScore = 0;
         clearInterval(ballTimer);
       }
     }
