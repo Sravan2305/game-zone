@@ -7,7 +7,7 @@
   //////////////////////////////////////////////////////////////////////////////
   //                               BALL HANDLER                              ///
   //////////////////////////////////////////////////////////////////////////////
-  let ballTimer = setInterval(ballMovement, 200);
+  let ballTimer = setInterval(ballMovement, 60);
   function ballMovement() {
     let ballX = ball.offsetLeft;
     let ballY = ball.offsetTop;
@@ -20,69 +20,38 @@
     let bottomY = bottom.offsetTop;
     let bottomWidth = bottom.offsetWidth;
 
+    /// get random number between 1 and 4
+    let randomY = getRandomArbitrary(1, 4);
+
     ball.style.left = ballX + ballSpeedX + "px";
     ball.style.top = ballY + ballSpeedY + "px";
 
-    if (ballX + ball.offsetWidth >= containerWidth) {
+    if (
+      ballX + ball.offsetWidth >= containerWidth - ball.offsetHeight / 2 ||
+      ballX < ball.offsetWidth / 2
+    ) {
       ballSpeedX = -ballSpeedX;
-      ball.style.left = containerWidth + ballSpeedX + "px";
-      ballSpeedY = -ballSpeedY;
-      ball.style.left = containerWidth + ballSpeedY + "px";
+      ball.style.left = ballX + ballSpeedX + "px";
+      ball.style.top = ballY + ballSpeedY + "px";
     }
-    if (ballY + ball.offsetHeight >= containerHeight) {
+    /// ROD LOGIC
+    if (
+      ballY + ball.offsetHeight > containerHeight - ball.offsetHeight / 2 ||
+      ballY <= ball.offsetHeight
+    ) {
+      if (
+        ballX > topX - Math.floor(topWidth / 2) &&
+        ballX < topX + Math.floor(topWidth / 2)
+      ) {
+        ballSpeedY = -ballSpeedY;
+        ball.style.left = ballX + ballSpeedX + "px";
+        ball.style.top = ballY + ballSpeedY + "px";
+      } else {
+        console.log("Game Over");
+        clearInterval(ballTimer);
+      }
     }
-    // console.log(
-    //   bottomWidth,
-    //   topWidth,
-    //   bottomX,
-    //   topX,
-    //   bottomY - topY,
-    //   containerHeight
-    // );
-    // let ballX = ball.offsetLeft;
-    // let ballY = ball.offsetTop;
-    // let ballSpeedX = 5;
-    // let ballSpeedY = 5;
-    // let ballWidth = ball.offsetWidth;
-    // let ballHeight = ball.offsetHeight;
-    // let containerWidth = container.offsetWidth;
-    // let containerHeight = container.offsetHeight;
-    // let topX = top.offsetLeft;
-    // let topY = top.offsetTop;
-    // let topWidth = top.offsetWidth;
-    // let topHeight = top.offsetHeight;
-    // let bottomX = bottom.offsetLeft;
-    // let bottomY = bottom.offsetTop;
-    // let bottomWidth = bottom.offsetWidth;
-    // let bottomHeight = bottom.offsetHeight;
-
-    // ball.style.left = ballX + ballSpeedX + "px";
-    // ball.style.top = ballY + ballSpeedY + "px";
-
-    // if (ballX + ballWidth >= containerWidth || ballX <= 0) {
-    //   ballSpeedX = -ballSpeedX;
-    // }
-    // if (ballY <= 0 || ballY + ballHeight >= containerHeight) {
-    //   ballSpeedY = -ballSpeedY;
-    // }
-    // if (
-    //   ballX <= topX + topWidth &&
-    //   ballX + ballWidth >= topX &&
-    //   ballY <= topY + topHeight &&
-    //   ballY + ballHeight >= topY
-    // ) {
-    //   ballSpeedY = -ballSpeedY;
-    // }
-    // if (
-    //   ballX <= bottomX + bottomWidth &&
-    //   ballX + ballWidth >= bottomX &&
-    //   ballY <= bottomY + bottomHeight &&
-    //   ballY + ballHeight >= bottomY
-    // ) {
-    //   ballSpeedY = -ballSpeedY;
-    // }
   }
-  //   setTimeout(ballMovement, 200);
 
   //////////////////////////////////////////////////////////////////////////////
   //                               KEY BOARD HANDLER                         ///
@@ -179,3 +148,7 @@
     mouseActive = false;
   });
 })();
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
