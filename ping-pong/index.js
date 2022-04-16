@@ -1,3 +1,6 @@
+
+
+
 (function () {
   const top = document.getElementById("top");
   const bottom = document.getElementById("bottom");
@@ -7,7 +10,12 @@
   //////////////////////////////////////////////////////////////////////////////
   //                               BALL HANDLER                              ///
   //////////////////////////////////////////////////////////////////////////////
-  let ballTimer = setInterval(ballMovement, 60);
+
+  var m = getRandomIntR(10, 30)
+  var s = 1
+  m = getRandomInt(2) * m
+
+  let ballTimer = setInterval(ballMovement, 10);
   function ballMovement() {
     let ballX = ball.offsetLeft;
     let ballY = ball.offsetTop;
@@ -20,48 +28,55 @@
     let bottomY = bottom.offsetTop;
     let bottomWidth = bottom.offsetWidth;
 
-    /// get random number between 1 and 4
-    let randomY = getRandomArbitrary(1, 4);
+    // if ( (ballY  == container.offsetWidth-ball.offsetHeight/2-6) || (ballY == ball.offsetHeight/2) ) {
+    //   clearInterval(ballTimer)
+    //   console.log("game over")
+    // }
 
-    ball.style.left = ballX + ballSpeedX + "px";
-    ball.style.top = ballY + ballSpeedY + "px";
 
-    if (
-      ballX + ball.offsetWidth >= containerWidth - ball.offsetHeight / 2 ||
-      ballX < ball.offsetWidth / 2
-    ) {
-      ballSpeedX = -ballSpeedX;
-      ball.style.left = ballX + ballSpeedX + "px";
-      ball.style.top = ballY + ballSpeedY + "px";
-    }
-    /// ROD LOGIC
-    if (
-      ballY + ball.offsetHeight > containerHeight - ball.offsetHeight / 2 ||
-      ballY <= ball.offsetHeight
-    ) {
-      if (
-        ballX > topX - Math.floor(topWidth / 2) &&
-        ballX < topX + Math.floor(topWidth / 2)
-      ) {
-        ballSpeedY = -ballSpeedY;
-        ball.style.left = ballX + ballSpeedX + "px";
-        ball.style.top = ballY + ballSpeedY + "px";
-        topScore++;
-        console.log(topScore);
-      } else {
-        console.log("Game Over");
-        window.localStorage.setItem("topScore", topScore);
-        topScore = 0;
-        clearInterval(ballTimer);
+    // left wall
+      if (ballX + m*1 < ball.offsetHeight/2 && ballX != ball.offsetHeight/2){
+        ball.style.left = ball.offsetHeight/2 + 'px';
+        m=m*-1
+        console.log('left')
       }
+    // Right wall
+      else if (ballX + m*1 > container.offsetWidth-ball.offsetHeight/2-6 && ballX != container.offsetWidth-ball.offsetHeight/2-6) {
+        ball.style.left = container.offsetWidth-ball.offsetHeight/2-6 + 'px';
+        m=m*-1
+        console.log('leRightft')
+      }
+    // down wall 
+      else if (ballY + s > container.offsetWidth-ball.offsetHeight/2-6  && ballY != container.offsetWidth-ball.offsetHeight/2-6 ) {
+        ball.style.top = container.offsetWidth-ball.offsetHeight/2-6 + 'px';
+        s = s*-1
+        console.log('down')
+      }
+      // upwall
+      else if (ballY + s < ball.offsetHeight/2 && ballY != ball.offsetHeight/2){
+        ball.style.top = ball.offsetHeight/2 + 'px';
+        s = s*-1
+        console.log('upwall')
+      }
+      else {
+        ball.style.left =(ballX + m*0.5) + "px";
+        ball.style.top = (ballY + s) + "px";
+        console.log('ok')
+      }
+
+
+
+
+    console.log(ballX,ballY)
+
     }
-  }
+
 
   //////////////////////////////////////////////////////////////////////////////
   //                               KEY BOARD HANDLER                         ///
   //////////////////////////////////////////////////////////////////////////////
   document.addEventListener("keydown", function (event) {
-    let leftComputedStyle = +getComputedStyle(top, "left").left.split("px")[0];
+    let leftComputedStyle = +getComputedStyle(top, "left").left.split("px")[0]; 
 
     if (
       event.key === "ArrowRight" &&
@@ -153,6 +168,15 @@
   });
 })();
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+function getRandomIntR(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+function getRandomInt(max) {
+  k =  Math.floor(Math.random() * max);
+  if (k==0){
+    return -1
+  }
+  return 1
 }
