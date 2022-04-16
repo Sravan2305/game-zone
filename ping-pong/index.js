@@ -5,6 +5,86 @@
   const ball = document.getElementById("ball");
 
   //////////////////////////////////////////////////////////////////////////////
+  //                               BALL HANDLER                              ///
+  //////////////////////////////////////////////////////////////////////////////
+  let ballTimer = setInterval(ballMovement, 200);
+  function ballMovement() {
+    let ballX = ball.offsetLeft;
+    let ballY = ball.offsetTop;
+    let containerWidth = container.offsetWidth;
+    let containerHeight = container.offsetHeight;
+    let topX = top.offsetLeft;
+    let topY = top.offsetTop;
+    let topWidth = top.offsetWidth;
+    let bottomX = bottom.offsetLeft;
+    let bottomY = bottom.offsetTop;
+    let bottomWidth = bottom.offsetWidth;
+
+    ball.style.left = ballX + ballSpeedX + "px";
+    ball.style.top = ballY + ballSpeedY + "px";
+
+    if (ballX + ball.offsetWidth >= containerWidth) {
+      ballSpeedX = -ballSpeedX;
+      ball.style.left = containerWidth + ballSpeedX + "px";
+      ballSpeedY = -ballSpeedY;
+      ball.style.left = containerWidth + ballSpeedY + "px";
+    }
+    if (ballY + ball.offsetHeight >= containerHeight) {
+    }
+    // console.log(
+    //   bottomWidth,
+    //   topWidth,
+    //   bottomX,
+    //   topX,
+    //   bottomY - topY,
+    //   containerHeight
+    // );
+    // let ballX = ball.offsetLeft;
+    // let ballY = ball.offsetTop;
+    // let ballSpeedX = 5;
+    // let ballSpeedY = 5;
+    // let ballWidth = ball.offsetWidth;
+    // let ballHeight = ball.offsetHeight;
+    // let containerWidth = container.offsetWidth;
+    // let containerHeight = container.offsetHeight;
+    // let topX = top.offsetLeft;
+    // let topY = top.offsetTop;
+    // let topWidth = top.offsetWidth;
+    // let topHeight = top.offsetHeight;
+    // let bottomX = bottom.offsetLeft;
+    // let bottomY = bottom.offsetTop;
+    // let bottomWidth = bottom.offsetWidth;
+    // let bottomHeight = bottom.offsetHeight;
+
+    // ball.style.left = ballX + ballSpeedX + "px";
+    // ball.style.top = ballY + ballSpeedY + "px";
+
+    // if (ballX + ballWidth >= containerWidth || ballX <= 0) {
+    //   ballSpeedX = -ballSpeedX;
+    // }
+    // if (ballY <= 0 || ballY + ballHeight >= containerHeight) {
+    //   ballSpeedY = -ballSpeedY;
+    // }
+    // if (
+    //   ballX <= topX + topWidth &&
+    //   ballX + ballWidth >= topX &&
+    //   ballY <= topY + topHeight &&
+    //   ballY + ballHeight >= topY
+    // ) {
+    //   ballSpeedY = -ballSpeedY;
+    // }
+    // if (
+    //   ballX <= bottomX + bottomWidth &&
+    //   ballX + ballWidth >= bottomX &&
+    //   ballY <= bottomY + bottomHeight &&
+    //   ballY + ballHeight >= bottomY
+    // ) {
+    //   ballSpeedY = -ballSpeedY;
+    // }
+  }
+  //   setTimeout(ballMovement, 200);
+
+  //////////////////////////////////////////////////////////////////////////////
   //                               KEY BOARD HANDLER                         ///
   //////////////////////////////////////////////////////////////////////////////
   document.addEventListener("keydown", function (event) {
@@ -60,7 +140,7 @@
   });
 
   //////////////////////////////////////////////////////////////////////////////
-  //                               TOUCH HANDLER                             ///
+  //                               MOUSE HANDLER                             ///
   //////////////////////////////////////////////////////////////////////////////
   let mouseStart = 0,
     mouseActive = false;
