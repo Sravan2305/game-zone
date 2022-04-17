@@ -1,3 +1,8 @@
+let playSound = (src) => {
+  new Audio(src).play();
+};
+
+/* INIT */
 (function () {
   const top = document.getElementById("top");
   const bottom = document.getElementById("bottom");
@@ -21,7 +26,7 @@
     let bottomWidth = bottom.offsetWidth;
 
     /// get random number between 1 and 4
-    let randomY = getRandomArbitrary(1, 4);
+    let randomY = (min, max) => getRandomArbitrary(min, max);
 
     ball.style.left = ballX + ballSpeedX + "px";
     ball.style.top = ballY + ballSpeedY + "px";
@@ -33,6 +38,7 @@
       ballSpeedX = -ballSpeedX;
       ball.style.left = ballX + ballSpeedX + "px";
       ball.style.top = ballY + ballSpeedY + "px";
+      playSound("audio/side1.wav");
     }
     /// ROD LOGIC
     if (
@@ -46,12 +52,14 @@
         ballSpeedY = -ballSpeedY;
         ball.style.left = ballX + ballSpeedX + "px";
         ball.style.top = ballY + ballSpeedY + "px";
+        playSound("audio/rod1.wav");
         topScore++;
         console.log(topScore);
       } else {
         console.log("Game Over");
         window.localStorage.setItem("topScore", topScore);
         topScore = 0;
+        playSound("audio/gameOver.wav");
         clearInterval(ballTimer);
       }
     }
