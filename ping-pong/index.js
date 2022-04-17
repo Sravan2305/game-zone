@@ -28,7 +28,6 @@ const ball = document.getElementById("ball");
     let bottomX = bottom.offsetLeft;
     let bottomY = bottom.offsetTop;
     let bottomWidth = bottom.offsetWidth;
-    console.log(m);
     if (
       ballY == container.offsetWidth - ball.offsetHeight / 2 - 6 ||
       ballY == ball.offsetHeight / 2
@@ -44,7 +43,6 @@ const ball = document.getElementById("ball");
     ) {
       ball.style.left = ball.offsetHeight / 2 + "px";
       m = m * -1;
-      // console.log('left')
     }
     // Right wall
     else if (
@@ -54,7 +52,6 @@ const ball = document.getElementById("ball");
       ball.style.left =
         container.offsetWidth - ball.offsetHeight / 2 - 6 + "px";
       m = m * -1;
-      // console.log('leRightft')
     }
 
     // Rod Hit Down
@@ -70,7 +67,6 @@ const ball = document.getElementById("ball");
         "px";
       s = s * -1;
       m = Math.random() * -1;
-      console.log("ok");
     }
 
     // Rod Hit Up
@@ -82,7 +78,6 @@ const ball = document.getElementById("ball");
       ball.style.top = top2.offsetHeight + ball.offsetHeight / 2 - 3 + "px";
       s = s * -1;
       m = Math.random() * -1;
-      console.log("ok up");
     }
 
     // down wall
@@ -92,7 +87,6 @@ const ball = document.getElementById("ball");
     ) {
       ball.style.top = container.offsetWidth - ball.offsetHeight / 2 - 6 + "px";
       s = s * -1;
-      // console.log('down')
     }
     // upwall
     else if (
@@ -101,15 +95,10 @@ const ball = document.getElementById("ball");
     ) {
       ball.style.top = ball.offsetHeight / 2 + "px";
       s = s * -1;
-      // console.log('upwall')
     } else {
       ball.style.left = ballX + m * 1 + "px";
-      console.log(ball.style.left);
       ball.style.top = ballY + s + "px";
-      // console.log('ok')
     }
-
-    // console.log(ballX,ballY)
   }
 
   //////////////////////////////////////////////////////////////////////////////
