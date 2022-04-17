@@ -1,8 +1,8 @@
-let playSound = (src) => {
-  new Audio(src).play();
-};
+const top2 = document.getElementById("top");
+const bottom = document.getElementById("bottom");
+const container = document.getElementById("container");
+const ball = document.getElementById("ball");
 
-/* INIT */
 (function () {
   const top = document.getElementById("top");
   const bottom = document.getElementById("bottom");
@@ -12,7 +12,11 @@ let playSound = (src) => {
   //////////////////////////////////////////////////////////////////////////////
   //                               BALL HANDLER                              ///
   //////////////////////////////////////////////////////////////////////////////
-  let ballTimer = setInterval(ballMovement, 60);
+
+  var m = getRandomInt(2) * Math.random();
+  var s = 1;
+
+  let ballTimer = setInterval(ballMovement, 10);
   function ballMovement() {
     let ballX = ball.offsetLeft;
     let ballY = ball.offsetTop;
@@ -24,45 +28,88 @@ let playSound = (src) => {
     let bottomX = bottom.offsetLeft;
     let bottomY = bottom.offsetTop;
     let bottomWidth = bottom.offsetWidth;
-
-    /// get random number between 1 and 4
-    let randomY = (min, max) => getRandomArbitrary(min, max);
-
-    ball.style.left = ballX + ballSpeedX + "px";
-    ball.style.top = ballY + ballSpeedY + "px";
-
+    console.log(m);
     if (
-      ballX + ball.offsetWidth >= containerWidth - ball.offsetHeight / 2 ||
-      ballX < ball.offsetWidth / 2
+      ballY == container.offsetWidth - ball.offsetHeight / 2 - 6 ||
+      ballY == ball.offsetHeight / 2
     ) {
-      ballSpeedX = -ballSpeedX;
-      ball.style.left = ballX + ballSpeedX + "px";
-      ball.style.top = ballY + ballSpeedY + "px";
-      playSound("audio/side1.wav");
+      clearInterval(ballTimer);
+      console.log("game over");
     }
-    /// ROD LOGIC
+
+    // left wall
     if (
-      ballY + ball.offsetHeight > containerHeight - ball.offsetHeight / 2 ||
-      ballY <= ball.offsetHeight
+      ballX + m * 1 < ball.offsetHeight / 2 &&
+      ballX != ball.offsetHeight / 2
     ) {
-      if (
-        ballX > topX - Math.floor(topWidth / 2) &&
-        ballX < topX + Math.floor(topWidth / 2)
-      ) {
-        ballSpeedY = -ballSpeedY;
-        ball.style.left = ballX + ballSpeedX + "px";
-        ball.style.top = ballY + ballSpeedY + "px";
-        playSound("audio/rod1.wav");
-        topScore++;
-        console.log(topScore);
-      } else {
-        console.log("Game Over");
-        window.localStorage.setItem("topScore", topScore);
-        topScore = 0;
-        playSound("audio/gameOver.wav");
-        clearInterval(ballTimer);
-      }
+      ball.style.left = ball.offsetHeight / 2 + "px";
+      m = m * -1;
+      // console.log('left')
     }
+    // Right wall
+    else if (
+      ballX + m * 1 > container.offsetWidth - ball.offsetHeight / 2 - 6 &&
+      ballX != container.offsetWidth - ball.offsetHeight / 2 - 6
+    ) {
+      ball.style.left =
+        container.offsetWidth - ball.offsetHeight / 2 - 6 + "px";
+      m = m * -1;
+      // console.log('leRightft')
+    }
+
+    // Rod Hit Down
+    else if (
+      ballY + s > bottom.offsetTop &&
+      ballX < bottom.offsetLeft + 104 &&
+      ballX > bottom.offsetLeft - 104
+    ) {
+      ball.style.top =
+        container.offsetWidth -
+        ball.offsetHeight / 2 -
+        (5 + bottom.offsetHeight) +
+        "px";
+      s = s * -1;
+      m = Math.random() * -1;
+      console.log("ok");
+    }
+
+    // Rod Hit Up
+    else if (
+      ballY + s < top.offsetTop + top.offsetHeight &&
+      ballX < bottom.offsetLeft + 104 &&
+      ballX > bottom.offsetLeft - 104
+    ) {
+      ball.style.top = top2.offsetHeight + ball.offsetHeight / 2 - 3 + "px";
+      s = s * -1;
+      m = Math.random() * -1;
+      console.log("ok up");
+    }
+
+    // down wall
+    else if (
+      ballY + s > container.offsetWidth - ball.offsetHeight / 2 - 6 &&
+      ballY != container.offsetWidth - ball.offsetHeight / 2 - 6
+    ) {
+      ball.style.top = container.offsetWidth - ball.offsetHeight / 2 - 6 + "px";
+      s = s * -1;
+      // console.log('down')
+    }
+    // upwall
+    else if (
+      ballY + s < ball.offsetHeight / 2 &&
+      ballY != ball.offsetHeight / 2
+    ) {
+      ball.style.top = ball.offsetHeight / 2 + "px";
+      s = s * -1;
+      // console.log('upwall')
+    } else {
+      ball.style.left = ballX + m * 1 + "px";
+      console.log(ball.style.left);
+      ball.style.top = ballY + s + "px";
+      // console.log('ok')
+    }
+
+    // console.log(ballX,ballY)
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -161,6 +208,15 @@ let playSound = (src) => {
   });
 })();
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+function getRandomIntR(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+function getRandomInt(max) {
+  k = Math.floor(Math.random() * max);
+  if (k == 0) {
+    return -1;
+  }
+  return 1;
 }
